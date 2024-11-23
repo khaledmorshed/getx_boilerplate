@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/global/global_variable.dart';
-import '../../../utils/theme/extend_theme/text_form_field_theme_extend.dart';
 
 class CustomTextFormField extends StatefulWidget {
-  final int themIndex;
   final IconData? suffixIcon;
   final IconData? prefixIcon;
   final bool isCurrentPasswordField;
@@ -48,9 +46,9 @@ class CustomTextFormField extends StatefulWidget {
   final int? maxLength;
   final FocusNode? focusNode;
   final bool? isAutovalidateMode;
-  final Color? enabledBoarderColor;
-  final Color? errorBoarderColor;
-  final Color? focusBoarderColor;
+  final Color enabledBoarderColor;
+  final Color errorBoarderColor;
+  final Color focusBoarderColor;
   final Color? prefixIconColor;
   final Color? suffixIconColor;
   final bool onlyShowingBoarderError;
@@ -61,13 +59,12 @@ class CustomTextFormField extends StatefulWidget {
   final double boarderRadius;
   final double suffixIconSize;
   final Color? labelTextColor;
-  final Color? floatingLabelColor;
+  final Color floatingLabelColor;
   final Color? textStyleColor;
   final Color? errorTextColor;
 
   const CustomTextFormField({
     super.key,
-    this.themIndex = 0,
     this.suffixIcon,
     this.prefixIcon,
     this.hintText,
@@ -108,8 +105,8 @@ class CustomTextFormField extends StatefulWidget {
     this.isPasswordField = false,
     this.isConfirmPasswordField = false,
     this.onFieldSubmit,
-    this.enabledBoarderColor,
-    this.focusBoarderColor,
+    this.enabledBoarderColor = Colors.blue,
+    this.focusBoarderColor = Colors.blue,
     this.onlyShowingBoarderError = false,
     this.enabled = true,
     this.isPhoneNumber = false,
@@ -118,11 +115,11 @@ class CustomTextFormField extends StatefulWidget {
     this.boarderRadius = 8,
     this.suffixIconOnTap,
     this.suffixIconSize = 22,
-    this.errorBoarderColor,
+    this.errorBoarderColor = Colors.red,
     this.prefixIconColor,
     this.suffixIconColor,
     this.labelTextColor,
-    this.floatingLabelColor,
+    this.floatingLabelColor = Colors.deepOrange,
     this.textStyleColor,
     this.textInputAction,
     this.errorTextColor,
@@ -157,29 +154,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
   @override
   Widget build(BuildContext context) {
-    final textFormFieldTheme = Theme.of(context).extension<TextFormFieldThemeExtend>()!;
-    final extendThemeList = [
-      textFormFieldTheme.inputDecorationFirst,
-      textFormFieldTheme.inputDecorationSecond,
-    ];
-    final textStyleList = [
-      textFormFieldTheme.textStyleFirst,
-      textFormFieldTheme.textStyleSecond,
-    ];
-    inputDecorationTheme = extendThemeList[widget.themIndex]!;
-    textStyle = textStyleList[widget.themIndex]!;
-    Color enableBoarderColor = widget.enabledBoarderColor ?? inputDecorationTheme.enabledBorder!.borderSide.color;
-    Color focusBoarderColor = widget.focusBoarderColor ?? inputDecorationTheme.focusedBorder!.borderSide.color;
-    Color errorBoarderColor = widget.errorBoarderColor ??  inputDecorationTheme.errorBorder!.borderSide.color;
-    Color prefixIconColor = widget.prefixIconColor ??  inputDecorationTheme.prefixIconColor!;
-    Color suffixIconColor = widget.suffixIconColor ??  inputDecorationTheme.suffixIconColor!;
-    Color labelTextColor = widget.labelTextColor ??  inputDecorationTheme.labelStyle!.color!;
-    Color hintColor = widget.suffixIconColor ??  inputDecorationTheme.hintStyle!.color!;
-    Color floatingLabelColor = widget.suffixIconColor ??  inputDecorationTheme.floatingLabelStyle!.color!;
-    Color fillColor = widget.fillColor ??  inputDecorationTheme.fillColor!;
-    Color textStyleColor = widget.textStyleColor ??  textStyle.color!;
-    Color errorTextColor = widget.errorTextColor ??  inputDecorationTheme.errorStyle!.color!;
-
     return Center(
       child: TextFormField(
         inputFormatters: widget.inputFormatters,
@@ -198,13 +172,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         onChanged: widget.onChanged != null ? (String txt) => widget.onChanged!(txt) : null,
         onFieldSubmitted: widget.onFieldSubmit != null ? (String txt) => widget.onFieldSubmit!(txt) : null,
         style: TextStyle(
-          color: textStyleColor,
+          color: widget.textStyleColor,
           fontSize: 14,
           fontWeight: FontWeight.w400,
         ),
         decoration: InputDecoration(
             errorStyle: TextStyle(
-            color: errorTextColor,
+            color: widget.errorTextColor,
             ),
             prefixIconConstraints: const BoxConstraints(maxHeight: 30, maxWidth: 40),
             suffixIconConstraints: const BoxConstraints(maxHeight: 30, maxWidth: 40),
@@ -221,25 +195,25 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             focusedBorder:  OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(widget.boarderRadius)),
               borderSide:  BorderSide(
-                  width: boarderWidthVariable, color: focusBoarderColor),
+                  width: boarderWidthVariable, color: widget.focusBoarderColor),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(widget.boarderRadius)),
               borderSide: BorderSide(
-                  width:  boarderWidthVariable, color: enableBoarderColor),
+                  width:  boarderWidthVariable, color: widget.enabledBoarderColor),
             ),
             errorBorder: !widget.onlyShowingBoarderError ? null : OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(widget.boarderRadius)),
               borderSide:  BorderSide(
                 width:  boarderWidthVariable,
-                color: errorBoarderColor,
+                color: widget.errorBoarderColor,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(widget.boarderRadius)),
               borderSide:  BorderSide(
                 width:  boarderWidthVariable,
-                color: errorBoarderColor,
+                color: widget.errorBoarderColor,
               ),
             ),
             labelText: widget.labelText,
@@ -247,12 +221,12 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                   (Set<WidgetState> states) {
                 final Color color = states.contains(WidgetState.error)
                     ? Theme.of(context).colorScheme.error
-                    : floatingLabelColor;
+                    : widget.floatingLabelColor;
                 return TextStyle(color: color, letterSpacing: 1.3, fontSize: 14);
               },
             ),
             floatingLabelBehavior: widget.isLabelShowAlways ? FloatingLabelBehavior.always  : null,
-            labelStyle: TextStyle(fontSize: 14, color: labelTextColor),
+            labelStyle: TextStyle(fontSize: 14, color: widget.labelTextColor),
             contentPadding: EdgeInsets.symmetric(horizontal: widget.contentPaddingHorizontal, vertical: widget.contentPaddingVertical/*(contentPaddingVertical+extraVerticalPadding).h*/),
             suffixIcon: widget.suffixIcon == null
                 ? null
@@ -272,7 +246,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8),
-                  child: Icon(suffixIcon, color: suffixIconColor, size: widget.suffixIconSize.r, ),
+                  child: Icon(suffixIcon, color: widget.suffixIconColor, size: widget.suffixIconSize.r, ),
                 ),
               ),
             ),
@@ -286,13 +260,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 : SizedBox(
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8),
-                child: Icon(widget.prefixIcon, color: prefixIconColor, size: 22.r, ),
+                child: Icon(widget.prefixIcon, color: widget.prefixIconColor, size: 22.r, ),
               ),
             ),
             hintText: widget.hintText,
             hintStyle:  TextStyle(fontSize: 13, fontStyle: FontStyle.italic, color: hintColor),
             filled: widget.isFilled,
-            fillColor: fillColor,
+            fillColor: widget.fillColor,
             //outlineboarder and error text may not stay together
             errorText: widget.isErrorValidation! ? null : widget.errorText
         ),

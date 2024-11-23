@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../app_colors/all_colors_export.dart';
+import '../../theme/app_colors/basic_color.dart';
+
 
 
 class GradientBoxDecoration {

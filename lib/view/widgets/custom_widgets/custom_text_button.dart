@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../utils/theme/extend_theme/text_button_theme_extend.dart';
 
-class CustomTextButton extends StatefulWidget {
-  final int styleIndex;
+class CustomTextButton extends StatelessWidget {
   final dynamic textWidget;
   final Function? onPressed;
   final Icon? icon;
@@ -20,7 +18,6 @@ class CustomTextButton extends StatefulWidget {
   final bool isBoarder;
 
   const CustomTextButton({
-    required this.styleIndex,
     this.textWidget = "",
     this.onPressed,
     this.icon,
@@ -40,54 +37,22 @@ class CustomTextButton extends StatefulWidget {
   });
 
   @override
-  State<CustomTextButton> createState() => _CustomTextButtonState();
-}
-
-class _CustomTextButtonState extends State<CustomTextButton> {
-  late ButtonStyle buttonStyle;
-  late Color disabledColor;
-  late Color bgColor;
-  late Color bdColor;
-  late Color txtColor;
-
-  @override
   Widget build(BuildContext context) {
-    final textButtonTheme = Theme.of(context).extension<TextButtonThemeExtend>()!;
-    final availableStyles = textButtonTheme.textButtonStyles;
-    final availableDisabledColors = textButtonTheme.disabledColors;
-
-    buttonStyle = availableStyles[widget.styleIndex];
-    bgColor = widget.backgroundColor ?? availableStyles[widget.styleIndex].backgroundColor!.resolve({})!;
-    bdColor = widget.boarderColor ?? availableStyles[widget.styleIndex].backgroundColor!.resolve({})!;
-    txtColor = widget.textColor ?? availableStyles[widget.styleIndex].textStyle!.resolve({})!.color!;
-    disabledColor = availableDisabledColors[widget.styleIndex];
-
     return TextButton(
-      onPressed:  widget.onPressed != null ? () => widget.onPressed!() : null,
+      onPressed:  onPressed != null ? () => onPressed!() : null,
       style: TextButton.styleFrom(
-        minimumSize: Size(widget.buttonWidth, 20),
-        fixedSize: Size.fromHeight(widget.buttonHeight),
+        minimumSize: const Size(80, 20),
+        fixedSize: Size.fromHeight(buttonHeight),
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
-        backgroundColor:  bgColor,
+        backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(widget.boarderRadius),
-          side: widget.isBoarder ?  BorderSide(color: bdColor, width: widget.boarderWidth) : BorderSide.none,
-        ),
-        side: widget.isBoarder ?  BorderSide(color: bdColor, width: widget.boarderWidth) : BorderSide.none,
-      ).copyWith(
-        backgroundColor: WidgetStateProperty.resolveWith<Color>(
-              (Set<WidgetState> states) {
-            if (states.contains(WidgetState.disabled)) {
-              return Theme.of(context).disabledColor;
-            }
-            return bgColor;
-          },
+          borderRadius: BorderRadius.circular(5.0),
         ),
       ),
-      child: widget.textWidget is String  ?  Padding(
+      child: textWidget is String  ?  Padding(
         padding: const EdgeInsets.only(left: 5.0, right: 5),
-        child: Text(widget.textWidget,  maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: widget.textFontSize!,  color: txtColor),),
-      ) : widget.textWidget,
+        child: Text(textWidget,  maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: textFontSize!,  color: textColor),),
+      ) : textWidget,
     );
   }
 }

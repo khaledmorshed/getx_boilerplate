@@ -14,7 +14,7 @@ class CustomElevatedButton extends StatelessWidget {
   final Color? textColor;
   final double boarderRadius;
   final double boarderWidth;
-  final Color? boarderColor;
+  final Color boarderColor;
   final Color? backgroundColor;
   final dynamic textWidget;
   final VoidCallback? onPressed;
@@ -29,7 +29,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.textColor,
     this.boarderRadius = 10,
     this.boarderWidth = 0.5,
-    this.boarderColor,
+    this.boarderColor = Colors.white,
     this.textWidget,
     this.onPressed,
     this.backgroundColor,
@@ -37,63 +37,22 @@ class CustomElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late ButtonStyle buttonStyle;
-    late Color disabledColor;
-    late Color bgColor;
-    late Color bdColor;
-    late Color txtColor;
-    final elevatedButtonTheme = Theme.of(context).extension<ElevatedButtonThemeExtend>()!;
-    final availableStyles = [
-      elevatedButtonTheme.elevatedButtonStylePrimary,
-      elevatedButtonTheme.elevatedButtonStyleSecondary,
-      elevatedButtonTheme.elevatedButtonStyleFirst,
-      elevatedButtonTheme.elevatedButtonStyleSecond,
-    ];
-    final availableDisabledColors = [
-      elevatedButtonTheme.disabledColorPrimary,
-      elevatedButtonTheme.disabledColorSecondary,
-      elevatedButtonTheme.disabledColorFirst,
-      elevatedButtonTheme.disabledColorSecond,
-    ];
-
-    buttonStyle = availableStyles[themeIndex]!;
-    bgColor = backgroundColor ?? availableStyles[themeIndex]!.backgroundColor!.resolve({})!;
-    bdColor = boarderColor ?? availableStyles[themeIndex]!.backgroundColor!.resolve({})!;
-    txtColor = textColor ?? availableStyles[themeIndex]!.textStyle!.resolve({})!.color!;
-    disabledColor = availableDisabledColors[themeIndex]!;
-
     return SizedBox(
       height: buttonHeight.h,
       child: ElevatedButton(
-        onPressed: onPressed != null ? () => onPressed!() : null,
-        style: buttonStyle.copyWith(
-          backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                (Set<WidgetState> states) {
-              if (states.contains(WidgetState.disabled)) {
-                return disabledColor;
-              }
-              return bgColor;
-            },
+        onPressed:  onPressed != null ? () => onPressed!() : null,
+        style: ElevatedButton.styleFrom(
+          padding:  EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
+          minimumSize: Size(buttonWidth.w, 20.h),
+          elevation: 0,
+          fixedSize: Size.fromHeight(buttonHeight.h),
+          backgroundColor: backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(boarderRadius.sp),
           ),
-          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-            EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
-          ),
-          minimumSize: WidgetStateProperty.all<Size>(
-            Size(buttonWidth.w, 20.h),
-          ),
-          fixedSize: WidgetStateProperty.all<Size>(
-            Size.fromHeight(buttonHeight.h),
-          ),
-          shape: WidgetStateProperty.all<OutlinedBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(boarderRadius.sp),
-            ),
-          ),
-          side: WidgetStateProperty.all<BorderSide>(
-            BorderSide(
-                width: boarderWidth,
-                color: onPressed != null ? bdColor : disabledColor
-            ),
+          side: BorderSide(
+            width: boarderWidth,
+            color: boarderColor,
           ),
         ),
         child: textWidget is String

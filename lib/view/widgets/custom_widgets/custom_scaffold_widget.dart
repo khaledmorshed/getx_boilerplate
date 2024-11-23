@@ -42,11 +42,8 @@ class CustomScaffoldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scaffoldBgColor = scaffoldBackGroundColor ?? Theme.of(context).scaffoldBackgroundColor;
-    final appBarBgColor = appBarBackGroundColor ?? Theme.of(context).appBarTheme.backgroundColor;
-
     return Scaffold(
-      backgroundColor: scaffoldBgColor,
+      backgroundColor: scaffoldBackGroundColor,
       extendBody: true,
       drawer: drawer,
       appBar: !isAppBar ?
@@ -54,8 +51,7 @@ class CustomScaffoldWidget extends StatelessWidget {
       AppBar(
         elevation: 0,
         automaticallyImplyLeading: automaticallyImplyLeading,
-        backgroundColor: appBarBgColor,
-        // foregroundColor: appBarBackGroundColor,
+        backgroundColor: appBarBackGroundColor,
         iconTheme: Theme.of(context).appBarTheme.iconTheme!,
         actions: appBarActionList,
         centerTitle: centerTitle,
@@ -79,7 +75,7 @@ class CustomScaffoldWidget extends StatelessWidget {
         ) : null,
       ),
       body: body,
-      //bottomNavigationBar: bottomNavigationBar,
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 }

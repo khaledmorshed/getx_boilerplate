@@ -13,8 +13,8 @@ const Color appBarLightColor = Color(0xff0057A3);
 
 
 ///primary and secondary color shade
-const Color appPrimaryColor = Color(0xff0057A3);
-const Color appPrimaryColorFirst = Color(0xff0563b5);
+const Color appPrimaryColor = Color(0xff2CA258);
+const Color appPrimaryColorFirst = Color(0xff3DAF59);
 const Color appPrimaryColorSecond = Color(0xff1f7dcf);
 const Color appPrimaryColorThird = Color(0xff3b9cf1);
 const Color appSecondaryColor = Color(0xff008080);

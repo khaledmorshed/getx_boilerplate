@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../app_colors/all_colors_export.dart';
+import '../../theme/app_colors/basic_color.dart';
 import '../size_box.dart';
 
 class OverlaySnackBar {

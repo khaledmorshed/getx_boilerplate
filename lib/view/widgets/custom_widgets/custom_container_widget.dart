@@ -16,9 +16,9 @@ class CustomContainerWidget extends StatelessWidget {
   final dynamic child;
   final double? height;
   final double? width;
-  final Color? backGroundColor;
-  final Color? boarderColor;
-  final Color? shadColor;
+  final Color backGroundColor;
+  final Color boarderColor;
+  final Color shadColor;
   final bool isOnlyPadding;
   final bool isOnlyMargin;
   final bool isSymmetricPadding;
@@ -61,6 +61,7 @@ class CustomContainerWidget extends StatelessWidget {
   final bool isBoxShadow ;
   final bool isBoarderRadius ;
   final DecorationImage? image ;
+  final List<Color> gradientColorList;
 
   const CustomContainerWidget({
     super.key,
@@ -68,9 +69,9 @@ class CustomContainerWidget extends StatelessWidget {
     this.child,
     this.height,
     this.width,
-    this.backGroundColor,
-    this.boarderColor,
-    this.shadColor,
+    this.backGroundColor = Colors.white,
+    this.boarderColor = Colors.white,
+    this.shadColor = Colors.black,
     this.isSymmetricPadding = false,
     this.isSymmetricMargin = false,
     this.isOnlyPadding = false,
@@ -113,19 +114,11 @@ class CustomContainerWidget extends StatelessWidget {
     this.isBoxShadow = false,
     this.isBoarderRadius = false,
     this.image,
+    this.gradientColorList = const[],
   });
 
   @override
   Widget build(BuildContext context) {
-    final containerTheme = Theme.of(context).extension<ContainerThemeExtend>()!;
-    final containerBackGroundColorList = containerTheme.containerBackgroundColorList;
-    final containerBoarderColorList = containerTheme.containerBorderColorList;
-    final containerBoxShadowColorList = containerTheme.containerBoxShadowColorList;
-
-    final Color bgColor = backGroundColor ?? containerBackGroundColorList[themeIndex];
-    final Color bdColor = boarderColor ?? containerBoarderColorList[themeIndex];
-    final Color shadowColor = boxShadowColor ??  containerBoxShadowColorList[themeIndex];
-
     return Container(
       height: height,
       width: width,
@@ -135,22 +128,38 @@ class CustomContainerWidget extends StatelessWidget {
       decoration: BoxDecoration(
         image: image,
         shape: shape,
-        color: bgColor.withOpacity(backGroundColorOpacity),
+        color: backGroundColor.withOpacity(backGroundColorOpacity),
         borderRadius: isBoarderRadius ? BorderRadius.all(Radius.circular(boarderRadius)) : null,
         border: isOnlyBoarder ? Border(
-          bottom: isBottomBoarder ? BorderSide(width: boarderWidth, color: bdColor.withOpacity(boarderColorOpacity)) : BorderSide.none,
-          top: isTopBoarder ? BorderSide(width: boarderWidth, color: bdColor.withOpacity(boarderColorOpacity)) : BorderSide.none,
-          left: isLeftBoarder ? BorderSide(width: boarderWidth, color: bdColor.withOpacity(boarderColorOpacity)) : BorderSide.none,
-          right: isRightBoarder ? BorderSide(width: boarderWidth, color: bdColor.withOpacity(boarderColorOpacity)) : BorderSide.none,
-        ) : isAllBoarder ? Border.all(width: boarderWidth, color: bdColor) : null,
+          bottom: isBottomBoarder ? BorderSide(width: boarderWidth, color: boarderColor.withOpacity(boarderColorOpacity)) : BorderSide.none,
+          top: isTopBoarder ? BorderSide(width: boarderWidth, color: boarderColor.withOpacity(boarderColorOpacity)) : BorderSide.none,
+          left: isLeftBoarder ? BorderSide(width: boarderWidth, color: boarderColor.withOpacity(boarderColorOpacity)) : BorderSide.none,
+          right: isRightBoarder ? BorderSide(width: boarderWidth, color: boarderColor.withOpacity(boarderColorOpacity)) : BorderSide.none,
+        ) : isAllBoarder ? Border.all(width: boarderWidth, color: boarderColor) : null,
         boxShadow: isBoxShadow ?  [
           BoxShadow(
             offset: Offset(offsetDx, offsetDx),
-            color: shadowColor.withOpacity(shadowColorOpacity),
+            color: shadColor.withOpacity(shadowColorOpacity),
             blurRadius: blurRadius,
             spreadRadius: spreadRadius,
           ),
         ] : [],
+        gradient: gradientColorList.isEmpty ? null : LinearGradient(
+          // begin: FractionalOffset(beingDx, beginDy),
+          // end: FractionalOffset(endDx, endDy),
+
+
+          // begin: Alignment.topRight,
+          // end: Alignment.bottomLeft,
+
+          begin: Alignment.topCenter,
+          end: Alignment.bottomLeft,
+
+          // stops: [0.2, 0.7, 1],
+          // center: Alignment.center,
+          // radius: 1,
+          colors: gradientColorList,
+        ),
       ),
       child: child,
     );
